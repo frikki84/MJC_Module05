@@ -19,7 +19,7 @@ pipeline{
 			steps {
 				echo 'Deploying ...'
 				bat 'ls'
-				dir("build/libs") {
+				cd ("build/libs") {
 					script{
 						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
 							echo "&"
