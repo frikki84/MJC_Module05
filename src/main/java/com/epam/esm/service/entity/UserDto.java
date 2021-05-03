@@ -1,0 +1,27 @@
+package com.epam.esm.service.entity;
+
+import java.util.List;
+
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
+import com.epam.esm.repository.entity.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@Relation(itemRelation = "user", collectionRelation = "users")
+public class UserDto extends RepresentationModel<UserDto> {
+
+    private long id;
+    private String name;
+    private String email;
+    private String password;
+    private Role role;
+    @JsonIgnore
+    private List<OrderDto> orderList;
+
+}
