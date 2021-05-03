@@ -7,7 +7,7 @@ pipeline{
 			url: 'https://github.com/frikki84/MJC_Module05.git'
 
 		}
-	}
+
 	stage('Build') {
 		steps {
 			sh 'gradle clean build'
@@ -27,5 +27,6 @@ pipeline{
 				}
 			}
 		}
+	}
 	}
 }
