@@ -5,9 +5,7 @@ pipeline{
 			steps {
 				echo 'cloning ...'
 				git url: 'https://github.com/frikki84/MJC_Module05.git'
-				git branch: 'module06'
-
-
+				branch: 'module06'
 			}
 		}
 
