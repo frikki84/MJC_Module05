@@ -1,2 +1,0 @@
-com/epam/esm/Module05ApplicationTests.java
- com.epam.esm.Module05ApplicationTests
