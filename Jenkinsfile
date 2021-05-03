@@ -22,7 +22,7 @@ pipeline{
 					script{
 						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
 							echo "&"
-							bat "java -jar Module05-2.0.0.jar &"
+							bat "java -jar Module05-2.0.0.jar&"
 						}
 					}
 				}
