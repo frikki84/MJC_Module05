@@ -10,19 +10,20 @@ pipeline{
 
 		stage('Build') {
 			steps {
-				sh 'gradle clean build'
-				sh 'gradle model'
+				echo 'building ...'
+				bat 'gradle clean build'
+				bat 'gradle model'
 			}
 		}
 		stage('Deploy') {
 			steps {
 				echo 'Deploying ...'
-				sh 'ls'
+				bat 'ls'
 				dir("build/libs") {
 					script{
 						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
 							echo "&"
-							sh "java -jar Module05-snapshot-1.0.0.jar &"
+							bat "java -jar Module05-snapshot-1.0.0.jar &"
 						}
 					}
 				}
