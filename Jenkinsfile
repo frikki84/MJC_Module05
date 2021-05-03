@@ -4,8 +4,9 @@ pipeline{
 		stage('Clone resources') {
 			steps {
 				echo 'cloning ...'
+				git url: 'https://github.com/frikki84/MJC_Module05.git'
 				git branch: 'module06'
-				url: 'https://github.com/frikki84/MJC_Module05.git'
+
 
 			}
 		}
