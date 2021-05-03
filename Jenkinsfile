@@ -18,7 +18,6 @@ pipeline{
 		stage('Deploy') {
 			steps {
 				echo 'Deploying ...'
-				bat 'ls'
 				cd ("build/libs") {
 					script{
 						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
