@@ -16,7 +16,7 @@ repositories {
 
 sonarqube {
 	properties {
-		property 'sonar.projectName', module05
+		property 'sonar.projectName', projectTitle
 		property 'sonar.projectKey', project.group + ':sonar-jacoco'
 	}
 }
