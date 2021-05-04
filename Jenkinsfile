@@ -19,9 +19,13 @@ pipeline{
 				echo 'building ...'
 				bat 'gradle clean build'
 				bat 'gradle model'
-				bat 'gradle sonarqube'
 			}
 		}
+		stage('SonarQube analysis') {
+            withSonarQubeEnv() { // Will pick the global server connection you have configured
+              bat 'gradlew sonarqube'
+            }
+          }
 		stage('Deploy') {
 			steps {
 				echo 'Deploying ...'
