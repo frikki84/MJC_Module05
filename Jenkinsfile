@@ -19,6 +19,7 @@ pipeline{
 				echo 'building ...'
 				bat 'gradle clean build'
 				bat 'gradle model'
+				bat 'gradle sonarqube'
 			}
 		}
 		stage('Deploy') {
