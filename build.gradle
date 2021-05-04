@@ -2,7 +2,8 @@ plugins {
 	id 'java'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'org.springframework.boot' version '2.4.3'
-	id "org.sonarqube" version "2.7"
+	id 'org.sonarqube' version '2.7'
+	id 'jacoco'
 }
 
 group = 'com.epam.esm'
@@ -12,6 +13,22 @@ repositories {
 	mavenLocal()
 	mavenCentral()
 }
+
+sonarqube {
+	properties {
+		property 'sonar.projectName', module05
+		property 'sonar.projectKey', project.group + ':sonar-jacoco'
+	}
+}
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		csv.enabled false
+		html.enabled false
+	}
+}
+
+test.finalizedBy jacocoTestReport
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
@@ -32,6 +49,8 @@ dependencies {
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.8.0'
 	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.8.0'
 	runtimeOnly 'mysql:mysql-connector-java'
+	compileOnly 'org.sonarsource.sonarqube:sonar-plugin-api:7.9'
+	testImplementation 'org.sonarsource.sonarqube:sonar-plugin-api:7.9'
 
 }
 
