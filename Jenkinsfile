@@ -7,6 +7,12 @@ pipeline{
 				git branch: 'module06', url: 'https://github.com/frikki84/MJC_Module05.git'
 			}
 		}
+		stage('Tests...') {
+        		steps {
+        			echo 'testing ...'
+        			bat 'gradle test'
+        		}
+        }
 
 		stage('Build') {
 			steps {
