@@ -27,6 +27,7 @@ import com.epam.esm.service.entity.OrderCreationParameter;
 import com.epam.esm.service.entity.OrderDto;
 import com.epam.esm.service.service.OrderService;
 import com.epam.esm.service.service.exception.AccessException;
+import com.epam.esm.service.service.exception.CustomErrorCode;
 import com.epam.esm.service.service.exception.NoSuchResourceException;
 import com.epam.esm.service.service.mapper.OrderDtoMapper;
 import com.epam.esm.service.service.validation.PageInfoValidation;
@@ -53,9 +54,17 @@ class OrderServiceTest {
     private int OFFSET = 10;
     private int LIMIT = 10;
     private long ID = 1L;
+    private Order order = new Order();
+    private OrderDto dto = new OrderDto();
+    private List<Order> orders = Arrays.asList(order);
+    private List<OrderDto> dtos = Arrays.asList(dto);
+
     @Test
     void findAll() {
-
+        Mockito.doNothing().when(pageInfoValidation).checkPageInfo(OFFSET, LIMIT, CustomErrorCode.ORDER);
+        Mockito.when(orderRepository.findAll(OFFSET, LIMIT)).thenReturn(orders);
+        Mockito.when(orderMapper.chandeOrderToDto(order)).thenReturn(dto);
+        assertEquals(dtos, orderService.findAll(OFFSET, LIMIT));
     }
 
     @Test
@@ -75,7 +84,6 @@ class OrderServiceTest {
 
     @Test
     void create() {
-        GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         OrderCreationParameter parameter = new OrderCreationParameter();
         parameter.setUserId(ID);
         parameter.setCertificates(Arrays.asList(1));
@@ -93,13 +101,9 @@ class OrderServiceTest {
 
     @Test
     void createNegativeNoUser() {
-        GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         OrderCreationParameter parameter = new OrderCreationParameter();
         parameter.setUserId(ID);
         parameter.setCertificates(Arrays.asList(1));
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
-        User user = new User();
         GiftCertificate certificate = new GiftCertificate();
         certificate.setPrice(new BigDecimal(1));
         Mockito.when(userRepository.findById(ID)).thenReturn(null);
@@ -108,12 +112,9 @@ class OrderServiceTest {
 
     @Test
     void createNegativeNoCertificate() {
-        GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         OrderCreationParameter parameter = new OrderCreationParameter();
         parameter.setUserId(ID);
         parameter.setCertificates(Arrays.asList(1));
-        Order order = new Order();
-        OrderDto orderDto = new OrderDto();
         User user = new User();
         GiftCertificate certificate = new GiftCertificate();
         certificate.setPrice(new BigDecimal(1));
