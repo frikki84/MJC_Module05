@@ -14,12 +14,12 @@ repositories {
 	mavenCentral()
 }
 
-sonarqube {
-	properties {
-		property 'sonar.projectName', projectTitle
-		property 'sonar.projectKey', project.group + ':sonar-jacoco'
-	}
-}
+//sonarqube {
+//	properties {
+//		property 'sonar.projectName', projectTitle
+//		property 'sonar.projectKey', project.group + ':sonar-jacoco'
+//	}
+//}
 jacocoTestReport {
 	reports {
 		xml.enabled true
