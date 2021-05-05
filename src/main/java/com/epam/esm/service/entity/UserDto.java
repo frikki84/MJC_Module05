@@ -9,9 +9,11 @@ import com.epam.esm.repository.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 @Relation(itemRelation = "user", collectionRelation = "users")
 public class UserDto extends RepresentationModel<UserDto> {
