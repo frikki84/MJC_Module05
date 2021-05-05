@@ -85,6 +85,5 @@ public class TagRepositoryImpl implements TagRepository {
         List<Tag> result = new ArrayList<>();
         tagList.forEach(s -> result.add(findByName(s).get(0)));
         return result;
-
     }
 }

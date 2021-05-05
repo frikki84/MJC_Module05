@@ -19,8 +19,12 @@ import com.epam.esm.repository.entity.User;
 import com.epam.esm.repository.repository.UserRepository;
 import com.epam.esm.service.entity.UserDto;
 import com.epam.esm.service.service.UserService;
+import com.epam.esm.service.service.exception.CustomErrorCode;
 import com.epam.esm.service.service.exception.NoSuchResourceException;
 import com.epam.esm.service.service.mapper.UserDtoMapper;
+import com.epam.esm.service.service.validation.PageInfoValidation;
+import com.epam.esm.service.service.validation.SecurityValidator;
+import com.epam.esm.service.service.validation.UserDtoValidation;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -29,6 +33,12 @@ class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private UserDtoMapper mapper;
+    @Mock
+    private PageInfoValidation pageValidation;
+    @Mock
+    private UserDtoValidation userDtoValidation;
+    @Mock
+    private SecurityValidator securityValidator;
     @InjectMocks
     private UserService userService;
 
@@ -49,15 +59,16 @@ class UserServiceTest {
 
     @Test
     void findAll() {
+        Mockito.doNothing().when(pageValidation).checkPageInfo(OFFSET, LIMIT, CustomErrorCode.USER);
         Mockito.when(userRepository.findAll(OFFSET, LIMIT)).thenReturn(users);
-        //Mockito.when(mapper.chandeUserToDto(user)).thenReturn(dto);
+        Mockito.when(mapper.chandeUserToDto(user)).thenReturn(dto);
         assertEquals(dtos, userService.findAll(OFFSET, LIMIT));
     }
 
     @Test
     void findByIdPositive() {
         Mockito.when(userRepository.findById(ID)).thenReturn(user);
-        //Mockito.when(mapper.chandeUserToDto(user)).thenReturn(dto);
+        Mockito.when(mapper.chandeUserToDto(user)).thenReturn(dto);
         Assertions.assertEquals(dto, userService.findById(ID));
     }
 
@@ -69,8 +80,10 @@ class UserServiceTest {
 
     @Test
     void createPositive() {
+        Mockito.doNothing().when(userDtoValidation).checkUserDto(dto);
+        Mockito.when(mapper.chandeDtoToUser(dto)).thenReturn(user);
         Mockito.when(userRepository.create(user)).thenReturn(user);
-        //Mockito.when(mapper.chandeUserToDto(user)).thenReturn(dto);
+        Mockito.when(mapper.chandeUserToDto(user)).thenReturn(dto);
         Assertions.assertEquals(dto, userService.create(dto));
     }
 

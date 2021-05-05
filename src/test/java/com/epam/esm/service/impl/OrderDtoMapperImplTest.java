@@ -45,7 +45,7 @@ class OrderDtoMapperImplTest {
         order.setUser(user);
         order.setGiftCertificateList(Arrays.asList(certificate));
         orderDto.setId(ID);
-//        orderDto.setUser(userDto);
+        orderDto.setUser(userDto);
         orderDto.setGiftCertificateList(Arrays.asList(certificateDto));
     }
 
@@ -60,7 +60,7 @@ class OrderDtoMapperImplTest {
     @Test
     void chandeOrderToDto() {
         Mockito.when(certificateMapper.changeCertificateToDto(certificate)).thenReturn(certificateDto);
-        //Mockito.when(userDtoMapper.chandeUserToDto(user)).thenReturn(userDto);
+        Mockito.when(userDtoMapper.chandeUserToDto(user)).thenReturn(userDto);
         Assertions.assertEquals(orderDto, mapper.chandeOrderToDto(order));
     }
 }

@@ -3,10 +3,11 @@ package com.epam.esm.service.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import  org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -39,7 +40,6 @@ class TagServiceTest {
     private UserRepository userRepository;
     @Mock
     private TagValidation tagValidation;
-
     @InjectMocks
     private TagService tagService;
 
@@ -72,22 +72,32 @@ class TagServiceTest {
 
     @Test
     void createPositive() {
-        //        Tag tag = new Tag();
-        //        TagDto dto = new TagDto();
-        //        dto.setNameTag(TAG_NAME);
-        //        List<Tag> tags = new ArrayList<>();
-        //        Mockito.when(tagValidation.chechTagDtoFormat(dto)).thenReturn(true);
-        //        Mockito.when(tagRepository.findByName(TAG_NAME)).thenReturn(tags);
-        //        Mockito.when(tagRepository.create(tag)).thenReturn(tag);
-        //        Mockito.when(mapper.changeTagToTagDto(tag)).thenReturn(dto);
-        //        assertEquals(dto, tagService.create(dto));
+        Tag tag = new Tag();
+        tag.setNameTag(TAG_NAME);
+        TagDto dto = new TagDto();
+        dto.setNameTag(TAG_NAME);
+        List<Tag> tags = Arrays.asList(tag);
+        Mockito.doNothing().when(tagValidation).chechTagDtoFormat(dto);
+        Mockito.when(mapper.changeTagDtoToTag(dto)).thenReturn(tag);
+        Mockito.when(tagRepository.findByName(tag.getNameTag())).thenReturn(tags);
+        //Mockito.when(tagRepository.create(tag)).thenReturn(tag);
+        Mockito.when(mapper.changeTagToTagDto(tag)).thenReturn(dto);
+        assertEquals(dto, tagService.create(dto));
     }
 
     @Test
-    void createNegative() {
-        //        TagDto dto = new TagDto();
-        //        Mockito.when(tagValidation.chechTagDtoFormat(dto)).thenThrow(TagValidationException.class);
-        //        assertThrows(TagValidationException.class, () -> tagService.create(dto));
+    void createPositiveNonExistedTag() {
+        Tag tag = new Tag();
+        tag.setNameTag(TAG_NAME);
+        TagDto dto = new TagDto();
+        dto.setNameTag(TAG_NAME);
+        List<Tag> tags = new ArrayList<>();
+        Mockito.doNothing().when(tagValidation).chechTagDtoFormat(dto);
+        Mockito.when(mapper.changeTagDtoToTag(dto)).thenReturn(tag);
+        Mockito.when(tagRepository.findByName(tag.getNameTag())).thenReturn(tags);
+        Mockito.when(tagRepository.create(tag)).thenReturn(tag);
+        Mockito.when(mapper.changeTagToTagDto(tag)).thenReturn(dto);
+        assertEquals(dto, tagService.create(dto));
     }
 
     @Test
@@ -111,11 +121,13 @@ class TagServiceTest {
     @Test
     void findMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrder() {
         Tag tag = new Tag();
+        List<Tag> tags = Arrays.asList(tag);
         TagDto dto = new TagDto();
+        List<TagDto> dtos = Arrays.asList(dto);
         Mockito.when(userRepository.findUserWithTheHighestCostOfAllOrder()).thenReturn(ID);
-        //Mockito.when(tagRepository.getMostWidelyUsedUsersTag(ID)).thenReturn(tag);
+        Mockito.when(tagRepository.getMostWidelyUsedUsersTag(ID)).thenReturn(tags);
         Mockito.when(mapper.changeTagToTagDto(tag)).thenReturn(dto);
-        assertEquals(ID, tagService.findMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrder());
-
+        assertEquals(dtos, tagService.findMostWidelyUsedTagOfUserWithTheHighestCostOfAllOrder());
     }
+
 }

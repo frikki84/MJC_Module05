@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.epam.esm.repository.entity.GiftCertificate;
 import com.epam.esm.repository.entity.Order;
+import com.epam.esm.repository.entity.Role;
 import com.epam.esm.repository.entity.User;
 import com.epam.esm.repository.repository.GiftCertificateRepository;
 import com.epam.esm.repository.repository.OrderRepository;
@@ -25,9 +26,11 @@ import com.epam.esm.service.entity.GiftCertificateDto;
 import com.epam.esm.service.entity.OrderCreationParameter;
 import com.epam.esm.service.entity.OrderDto;
 import com.epam.esm.service.service.OrderService;
+import com.epam.esm.service.service.exception.AccessException;
 import com.epam.esm.service.service.exception.NoSuchResourceException;
 import com.epam.esm.service.service.mapper.OrderDtoMapper;
 import com.epam.esm.service.service.validation.PageInfoValidation;
+import com.epam.esm.service.service.validation.SecurityValidator;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceTest {
@@ -41,14 +44,15 @@ class OrderServiceTest {
     @Mock
     private GiftCertificateRepository certificateRepository;
     @Mock
+    private SecurityValidator securityValidator;
+    @Mock
     private PageInfoValidation pageInfoValidation;
     @InjectMocks
     private OrderService orderService;
 
-    public static final int OFFSET = 10;
-    public static final int LIMIT = 10;
-    public static final long ID = 1L;
-
+    private int OFFSET = 10;
+    private int LIMIT = 10;
+    private long ID = 1L;
     @Test
     void findAll() {
 
@@ -74,7 +78,7 @@ class OrderServiceTest {
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         OrderCreationParameter parameter = new OrderCreationParameter();
         parameter.setUserId(ID);
-        //        parameter.setCertificates(Arrays.asList(1));
+        parameter.setCertificates(Arrays.asList(1));
         Order order = new Order();
         OrderDto orderDto = new OrderDto();
         User user = new User();
@@ -92,7 +96,7 @@ class OrderServiceTest {
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         OrderCreationParameter parameter = new OrderCreationParameter();
         parameter.setUserId(ID);
-        // parameter.setCertificates(Arrays.asList(1));
+        parameter.setCertificates(Arrays.asList(1));
         Order order = new Order();
         OrderDto orderDto = new OrderDto();
         User user = new User();
@@ -107,7 +111,7 @@ class OrderServiceTest {
         GiftCertificateDto giftCertificateDto = new GiftCertificateDto();
         OrderCreationParameter parameter = new OrderCreationParameter();
         parameter.setUserId(ID);
-        //parameter.setCertificates(Arrays.asList(1));
+        parameter.setCertificates(Arrays.asList(1));
         Order order = new Order();
         OrderDto orderDto = new OrderDto();
         User user = new User();
@@ -142,16 +146,30 @@ class OrderServiceTest {
         OrderDto orderDto = new OrderDto();
         List<Order> orderList = Arrays.asList(order);
         List<OrderDto> dtoList = Arrays.asList(orderDto);
+        User user = new User();
+        user.setRole(Role.ADMIN);
         Mockito.when(orderRepository.readOrdersByUser(ID)).thenReturn(orderList);
+        Mockito.when(securityValidator.findUserFromAuthentication()).thenReturn(user);
         Mockito.when(orderMapper.chandeOrderToDto(order)).thenReturn(orderDto);
         assertEquals(dtoList, orderService.readOrdersByUser(ID));
 
     }
 
     @Test
-    void readOrdersByUserNegative() {
-        Mockito.when(orderRepository.readOrdersByUser(ID)).thenReturn(new ArrayList<Order>());
-        assertThrows(NoSuchResourceException.class, () -> orderService.readOrdersByUser(ID));
+    void readOrdersByUserNegativeUser() {
+        User user = new User();
+        user.setRole(Role.USER);
+        user.setId(ID+1);
+        Mockito.when(securityValidator.findUserFromAuthentication()).thenReturn(user);
+        assertThrows(AccessException.class, () -> orderService.readOrdersByUser(ID));
+    }
 
+    @Test
+    void readOrdersByUserNegativeNoSuchId() {
+        User user = new User();
+        user.setRole(Role.ADMIN);
+        Mockito.when(securityValidator.findUserFromAuthentication()).thenReturn(user);
+        Mockito.when(orderRepository.readOrdersByUser(ID)).thenThrow(NoSuchResourceException.class);
+        assertThrows(NoSuchResourceException.class, () -> orderService.readOrdersByUser(ID));
     }
 }

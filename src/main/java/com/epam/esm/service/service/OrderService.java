@@ -123,7 +123,7 @@ public class OrderService {
         if (Objects.isNull(userId)) {
             userId = user.getId();
         }
-        System.out.println("userId = " + userId + ", user.getId() = " + user.getId());
+
         if (user.getRole().equals(Role.USER) && userId != user.getId()) {
             throw new AccessException(LocalizationExceptionMessageValues.INFORMATION_FOBBIDEN.getMessage());
         }
