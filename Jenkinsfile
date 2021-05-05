@@ -7,39 +7,39 @@ pipeline{
 				git branch: 'module06', url: 'https://github.com/frikki84/MJC_Module05.git'
 			}
 		}
-		stage('Tests...') {
-        		steps {
-        			echo 'testing ...'
-        			bat 'gradle test'
-        		}
-        }
+		stage('Tests') {
+			steps {
+				echo 'Testing ...'
+				bat 'gradle test'
+			}
+		}
 
 		stage('Build') {
 			steps {
-				echo 'building ...'
+				echo 'Building ...'
 				bat 'gradle clean build'
 				bat 'gradle model'
 			}
 		}
 		stage('Deploy') {
-				steps {
-            				echo 'Deploying ...'
-            				dir ("build/libs") {
-            					script{
-            						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
-            							echo "&"
-            							bat "start java -jar Module05-2.0.0.jar"
-            						}
-            					}
-            				}
-            			}
-            		}
+			steps {
+				echo 'Deploying ...'
+				dir ("build/libs") {
+					script{
+						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
+							echo "&"
+							bat "start java -jar Module05-2.0.0.jar"
+						}
+					}
+				}
+			}
+		}
 
-			stage('SonarQube analysis ') {
-              steps {
-        			echo 'SonarQube ...'
-        			bat 'gradle sonarqube'
-        			}
-        }
+		stage('SonarQube analysis...') {
+			steps {
+				echo 'SonarQube ...'
+				bat 'gradle sonarqube'
+			}
+		}
 	}
 }
