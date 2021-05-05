@@ -21,6 +21,14 @@ pipeline{
 				bat 'gradle model'
 			}
 		}
+
+		stage('SonarQube analysis...') {
+			steps {
+				echo 'SonarQube ...'
+				bat 'gradle sonarqube'
+			}
+		}
+
 		stage('Deploy') {
 			steps {
 				echo 'Deploying ...'
@@ -35,11 +43,6 @@ pipeline{
 			}
 		}
 
-		stage('SonarQube analysis...') {
-			steps {
-				echo 'SonarQube ...'
-				bat 'gradle sonarqube'
-			}
-		}
+
 	}
 }
