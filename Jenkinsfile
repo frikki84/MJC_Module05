@@ -29,14 +29,6 @@ pipeline{
 			}
 		}
 
-		stage('Jacoco report') {
-			steps {
-				echo 'Jacoco ...'
-                junit '*/build/test-results/*.xml'
-                withEnv( [ $class: 'JacocoPublisher' ] )
-			}
-		}
-
 		stage('Deploy') {
 			steps {
 				echo 'Deploying ...'
@@ -51,6 +43,31 @@ pipeline{
 			}
 		}
 
+ stage('Build & Generate Test Report') {
+          steps {
+              script {
+                 try {
+                        sh 'chmod +x gradlew'
+                        sh './gradlew build -x test --no-daemon'
+                        sh './gradlew test jacocoTestReport --no-daemon'
+                    } finally {
+                        junit '**/build/test-results/test/*.xml' //make
+                        the junit test results available in any case
+                        (success & failure)
+                    }
+                }
+            }
+        }
 
+       stage('Publish Test Coverage Report') {
+         steps {
+           step([$class: 'JacocoPublisher',
+                execPattern: '**/build/jacoco/*.exec',
+                classPattern: '**/build/classes',
+                sourcePattern: 'src/main/java',
+                exclusionPattern: 'src/test*'
+                ])
+            }
+        }
 	}
 }
