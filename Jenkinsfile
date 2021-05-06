@@ -32,7 +32,7 @@ pipeline{
 		stage('Jacoco report') {
 			steps {
 				echo 'Jacoco ...'
-				bat 'gradle jacocoTestReport'
+				bat 'gradle jacoco'
 			}
 		}
 
