@@ -47,9 +47,9 @@ pipeline{
           steps {
               script {
                  try {
-                        bat chmod +x gradlew
-                        bat 'gradle build -x test --no-daemon'
-                        bat 'gradle test jacocoTestReport --no-daemon'
+                        sh 'chmod +x gradlew'
+                        sh 'gradle build -x test --no-daemon'
+                        sh 'gradle test jacocoTestReport --no-daemon'
                     } finally {
                         junit 'build/test-results/test/*.xml'
                     }
