@@ -32,9 +32,8 @@ pipeline{
 		stage('Jacoco report') {
 			steps {
 				echo 'Jacoco ...'
-				bat './jenkins_build.sh'
                 junit '*/build/test-results/*.xml'
-                step( [ $class: 'JacocoPublisher' ] )
+                withEnv( [ $class: 'JacocoPublisher' ] )
 			}
 		}
 
