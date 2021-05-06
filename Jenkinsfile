@@ -47,7 +47,7 @@ pipeline{
           steps {
               script {
                  try {
-                        bat 'chmod +x gradle'
+                        bat chmod +x gradlew
                         bat 'gradle build -x test --no-daemon'
                         bat 'gradle test jacocoTestReport --no-daemon'
                     } finally {
