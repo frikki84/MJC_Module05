@@ -28,7 +28,7 @@ jacocoTestReport {
 	}
 }
 
-test.finalizedBy jacocoTestReport
+//test.finalizedBy jacocoTestReport
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'

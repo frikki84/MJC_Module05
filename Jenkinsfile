@@ -22,10 +22,17 @@ pipeline{
 			}
 		}
 
-		stage('SonarQube analysis...') {
+		stage('SonarQube analysis') {
 			steps {
 				echo 'SonarQube ...'
 				bat 'gradle sonarqube'
+			}
+		}
+
+		stage('Jacoco report') {
+			steps {
+				echo 'Jacoco ...'
+				bat 'gradle jacocoTestReport'
 			}
 		}
 
