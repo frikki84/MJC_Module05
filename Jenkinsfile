@@ -48,10 +48,10 @@ pipeline{
               script {
                  try {
                         bat 'chmod +x gradlew'
-                        bat './gradlew build -x test --no-daemon'
-                        bat './gradlew test jacocoTestReport --no-daemon'
+                        bat 'gradle build -x test --no-daemon'
+                        bat 'gradle test jacocoTestReport --no-daemon'
                     } finally {
-                        junit '**/build/test-results/test/*.xml'
+                        junit 'build/test-results/test/*.xml'
                     }
                 }
             }
