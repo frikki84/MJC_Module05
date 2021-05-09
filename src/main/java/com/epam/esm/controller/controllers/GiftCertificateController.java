@@ -35,17 +35,16 @@ public class GiftCertificateController {
     @Autowired
     private final GiftCertificateService giftCertificateService;
     private final HateoasBuilder hateoasBuilder;
-    private final PaginationBuilder<GiftCertificateDto> paginationBuilder;
+    private final PaginationBuilder paginationBuilder;
 
     public GiftCertificateController(GiftCertificateService giftCertificateService, HateoasBuilder hateoas,
-            PaginationBuilder<GiftCertificateDto> pagination) {
+            PaginationBuilder paginationBuilder) {
         this.giftCertificateService = giftCertificateService;
         this.hateoasBuilder = hateoas;
-        this.paginationBuilder = pagination;
+        this.paginationBuilder = paginationBuilder;
     }
 
     @GetMapping
-    @PreAuthorize(AUTHORITY_READ)
     public PagedModel<GiftCertificateDto> findAll(
             @RequestParam(value = "page", required = false, defaultValue = DEFAULTE_PAGE_VALUE) int page,
             @RequestParam(value = "size", required = false, defaultValue = DEFAULTE_SIZE_VALUE) int size) {
@@ -62,7 +61,6 @@ public class GiftCertificateController {
     }
 
     @GetMapping("/find")
-    @PreAuthorize(AUTHORITY_READ)
     public PagedModel<GiftCertificateDto> findAllByParameter(
             @RequestParam(value = "page", required = false, defaultValue = DEFAULTE_PAGE_VALUE) int page,
             @RequestParam(value = "size", required = false, defaultValue = DEFAULTE_SIZE_VALUE) int size,
