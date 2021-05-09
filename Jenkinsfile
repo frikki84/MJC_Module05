@@ -36,7 +36,7 @@ pipeline{
 					script{
 						withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
 							echo "&"
-							bat "start java -jar Module05-2.0.0.jar"
+							bat "start java -jar Module05-2.0.0.war"
 						}
 					}
 				}
