@@ -18,9 +18,6 @@ import com.epam.esm.service.service.security.SpringSecurityExceptionHandler;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private static int BCRYPT_ROUND = 12;
-
-    //info
-
     private final JwtConfiguration jwtConfiguration;
     private final SpringSecurityExceptionHandler exceptionHandler;
 
